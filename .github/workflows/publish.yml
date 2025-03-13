@@ -25,7 +25,8 @@ jobs:
       uses: actions/setup-node@v3
       with:
         node-version: '18.x'
-        registry-url: 'https://registry.npmjs.org'
+        registry-url: 'https://registry.npmjs.org/'
+        scope: '@uma'
     
     - name: Install Linux Dependencies
       if: runner.os == 'Linux'
@@ -38,6 +39,9 @@ jobs:
       
     - name: Build TypeScript
       run: npm run build-ts || echo "TypeScript build failed but continuing"
+    
+    - name: Fix package.json issues
+      run: npm pkg fix
     
     - name: Publish to NPM
       run: npm publish --access=public
