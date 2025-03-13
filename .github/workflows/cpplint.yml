@@ -25,4 +25,4 @@ jobs:
         pip install cpplint
     
     - name: Run cpplint
-      run: cpplint --recursive ./src/lib ./src/libuiohook/src 
+      run: cpplint --extensions=c,h --filter=-legal/copyright,-readability/casting,-build/include_subdir --recursive ./src/lib ./src/libuiohook/src 

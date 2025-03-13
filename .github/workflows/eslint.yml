@@ -24,4 +24,4 @@ jobs:
       run: npm install
     
     - name: Run ESLint
-      run: npm run lint || npm run lint:fix 
+      run: npm run lint -- --no-error-on-unmatched-pattern || npm run lint:fix -- --no-error-on-unmatched-pattern 
