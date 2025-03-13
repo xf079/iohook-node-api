@@ -3,6 +3,10 @@ name: Publish to NPM
 on:
   release:
     types: [created]
+  workflow_dispatch:  # 允许手动触发
+  push:
+    tags:        # 推送标签时触发
+      - 'v*'     # 匹配所有以v开头的标签，如v1.0.0
 
 jobs:
   build:
