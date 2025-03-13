@@ -29,7 +29,7 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/username/iohook-node-api.git"
+    "url": "git+https://github.com/xfo79k/iohook-node-api.git"
   },
   "dependencies": {
     "node-gyp-build": "^4.6.1"
