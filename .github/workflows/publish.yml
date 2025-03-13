@@ -1,0 +1,78 @@
+name: Publish to NPM
+
+on:
+  release:
+    types: [created]
+
+jobs:
+  build:
+    name: Build on ${{ matrix.os }}
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+    
+    steps:
+    - uses: actions/checkout@v3
+      with:
+        submodules: recursive
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        registry-url: 'https://registry.npmjs.org'
+    
+    - name: Install Linux Dependencies
+      if: runner.os == 'Linux'
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libx11-dev libxtst-dev libxt-dev libxinerama-dev libx11-xcb-dev libxcb-dri3-dev libxkbcommon-dev libxcb-xkb-dev
+    
+    - name: Install macOS Dependencies
+      if: runner.os == 'macOS'
+      run: brew install cmake
+    
+    - name: Install dependencies
+      run: npm ci
+      
+    - name: Build
+      run: npm run prebuild
+    
+    - name: Upload prebuilds
+      uses: actions/upload-artifact@v3
+      with:
+        name: prebuilds-${{ matrix.os }}
+        path: prebuilds/
+  
+  publish:
+    name: Publish to NPM
+    needs: build
+    runs-on: ubuntu-latest
+    
+    steps:
+    - uses: actions/checkout@v3
+    
+    - name: Setup Node.js
+      uses: actions/setup-node@v3
+      with:
+        node-version: '18.x'
+        registry-url: 'https://registry.npmjs.org'
+    
+    - name: Download all prebuilds
+      uses: actions/download-artifact@v3
+      with:
+        path: artifacts
+    
+    - name: Prepare prebuilds
+      run: |
+        mkdir -p prebuilds
+        cp -r artifacts/prebuilds-*/prebuilds/* prebuilds/
+    
+    - name: Install dependencies
+      run: npm ci
+    
+    - name: Publish
+      run: npm publish --access=public
+      env:
+        NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }} 

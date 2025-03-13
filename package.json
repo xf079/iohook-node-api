@@ -1,0 +1,52 @@
+{
+  "name": "@uma/iohook-napi",
+  "version": "1.0.0",
+  "description": "Node.js N-API bindings for libuiohook with improvements",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "install": "node-gyp-build",
+    "prebuild": "prebuildify --napi",
+    "build-ts": "tsc",
+    "build": "npm run build-ts && npm run prebuild",
+    "lint": "eslint --ext .js,.ts .",
+    "lint:fix": "eslint --ext .js,.ts . --fix",
+    "test": "node test/test.js",
+    "prepare": "npm run build-ts"
+  },
+  "keywords": [
+    "iohook",
+    "uiohook",
+    "libuiohook",
+    "hook",
+    "input",
+    "keyboard",
+    "mouse",
+    "global",
+    "shortcut"
+  ],
+  "author": "",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/username/iohook-node-api.git"
+  },
+  "dependencies": {
+    "node-gyp-build": "^4.6.1"
+  },
+  "devDependencies": {
+    "@types/node": "^18.19.17",
+    "@typescript-eslint/eslint-plugin": "^6.21.0",
+    "@typescript-eslint/parser": "^6.21.0",
+    "eslint": "^8.56.0",
+    "prebuildify": "^5.0.1",
+    "typescript": "^5.3.3"
+  },
+  "gypfile": true,
+  "engines": {
+    "node": ">= 16"
+  },
+  "publishConfig": {
+    "access": "public"
+  }
+} 
